@@ -1,2 +1,2 @@
 docker:
-  - image: jimbostar/accurics-cli:0.0.10
+  - image: accurics/accurics-orb-cli:latest
