@@ -1,0 +1,2 @@
+docker:
+  - image: jimbostar/accurics-cli:0.0.10

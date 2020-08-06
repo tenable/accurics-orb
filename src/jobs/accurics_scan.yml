@@ -1,0 +1,61 @@
+description: |
+  Run Accurics scan
+
+parameters:
+  debug-mode:
+    default: false
+    type: boolean
+  terraform-version:
+    description: 'The Terraform version used to process the files in this repository (ex: 0.12.26). (default=latest)'
+    type: string
+    default: 'latest'
+  directories:
+    description: 'A list of directories to scan within this repository separated by a space. (default=current directory)'
+    type: string
+    default: '.'
+  plan-args:
+    description: 'Terraform plan arguments'
+    type: string
+    default: ''
+  env-id:
+    description: 'Environment ID for Accurics to scan'
+    type: env_var_name
+    default: ACCURICS_ENV_ID
+  app-id:
+    description: 'Accurics CLI Application Token ID'
+    type: env_var_name
+    default: ACCURICS_API_KEY
+  repo-name:
+    description: 'Repository Location'
+    type: string
+    default: '__empty__'
+  url:
+    description: 'Accurics Application URL'
+    type: string
+    default: 'https://app.accurics.com'
+  fail-on-violations:
+    description: 'Allows Accurics to fail the build when violations are found (default=true)'
+    type: boolean
+    default: true
+  fail-on-all-errors:
+    description: 'Allows Accurics to fail the build when any errors are encountered (default=true)'
+    type: boolean
+    default: true
+
+executor:
+  name: default
+
+steps:
+  - checkout
+  - scan:
+      debug-mode: <<parameters.debug-mode>>
+      terraform-version: <<parameters.terraform-version>>
+      directories: <<parameters.directories>>
+      plan-args: <<parameters.plan-args>>
+      env-id: <<parameters.env-id>>
+      app-id: <<parameters.app-id>>
+      repo-name: <<parameters.repo-name>>
+      url: <<parameters.url>>
+      fail-on-violations: <<parameters.fail-on-violations>>
+      fail-on-all-errors: <<parameters.fail-on-all-errors>>
+

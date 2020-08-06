@@ -1,0 +1,9 @@
+version: 2.1
+
+description: >
+  The Accurics CircleCI Orb scans IaC (Infrastructure as Code) to help identify vulnerabilities prior to
+  cloud deployment.
+
+display:
+  source_url: https://github.com/accurics/accurics-orb
+  home_url: https://www.accurics.com

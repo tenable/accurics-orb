@@ -1,0 +1,17 @@
+description: |
+  The Accurics CircleCI Orb scans IaC (Infrastructure as Code) to help identify vulnerabilities prior to
+  cloud deployment.
+
+usage:
+  version: 2.1
+  orbs:
+    accurics: accurics/accurics-cli@x.y.z
+  workflows:
+    deploy:
+      jobs:
+        - accurics/accurics_scan:
+            terraform-version: latest
+            directories: ./your-root
+            plan-args: -var your-var=your-value
+            fail-on-violations: false
+            fail-on-all-errors: true
