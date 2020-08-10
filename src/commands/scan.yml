@@ -49,4 +49,4 @@ steps:
         /run-scan.sh -m <<parameters.debug-mode>> -t <<parameters.terraform-version>> -d '<<parameters.directories>>'
         -a '<<parameters.plan-args>>' -e ${<<parameters.env-id>>} -k ${<<parameters.app-id>>}
         -r '<<parameters.repo-name>>' -u '<<parameters.url>>' -v <<parameters.fail-on-violations>>
-        -f <<parameters.fail-on-all-errors>>
+        -f '<<parameters.fail-on-all-errors>>'
