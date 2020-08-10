@@ -1,56 +1,57 @@
 version: 2.1
-  orbs:
-    orb-tools: circleci/orb-tools@9.3.1
-    accurics: accurics/accurics-cli@<< pipeline.parameters.dev-orb-version >>
 
-  orb_prep_jobs: &orb_prep_jobs
-    [
-      orb-tools/lint,
-      orb-tools/shellcheck,
-      orb-tools/pack
-    ]
+orbs:
+  orb-tools: circleci/orb-tools@9.3.1
+  accurics: accurics/accurics-cli@<< pipeline.parameters.dev-orb-version >>
 
-  parameters:
-    run-integration-tests:
-      type: boolean
-      default: false
-    dev-orb-version:
-      type: string
-      default: "dev:alpha"
+orb_prep_jobs: &orb_prep_jobs
+  [
+    orb-tools/lint,
+    orb-tools/shellcheck,
+    orb-tools/pack
+  ]
 
-  jobs:
-    integration-tests:
-      executor: orb-tools/ubuntu
-      steps:
-        - checkout
+parameters:
+  run-integration-tests:
+    type: boolean
+    default: false
+  dev-orb-version:
+    type: string
+    default: "dev:alpha"
 
-  workflows:
-    lint_pack-validate_publish-dev:
-      unless: << pipeline.parameters.run-integration-tests >>
-      jobs:
-        - orb-tools/lint
-        - orb-tools/shellcheck
-        - orb-tools/pack
-        - orb-tools/publish-dev:
-            orb-name: accurics/accurics-cli
-            requires: *orb_prep_jobs
+jobs:
+  integration-tests:
+    executor: orb-tools/ubuntu
+    steps:
+      - checkout
 
-        - orb-tools/trigger-integration-tests-workflow:
-            name: trigger-integration-dev
-            requires:
-              - orb-tools/publish-dev
+workflows:
+  lint_pack-validate_publish-dev:
+    unless: << pipeline.parameters.run-integration-tests >>
+    jobs:
+      - orb-tools/lint
+      - orb-tools/shellcheck
+      - orb-tools/pack
+      - orb-tools/publish-dev:
+          orb-name: accurics/accurics-cli
+          requires: *orb_prep_jobs
 
-    integration-tests_prod-release:
-      when: << pipeline.parameters.run-integration-tests >>
-      jobs:
-        - integration-tests
-        - orb-tools/dev-promote-prod-from-commit-subject:
-            orb-name: accurics/accurics-cli
-            add-pr-comment: false
-            publish-version-tag: false
-            fail-if-semver-not-indicated: false
-            requires:
-              - integration-tests
-            filters:
-              branches:
-                only: master
+      - orb-tools/trigger-integration-tests-workflow:
+          name: trigger-integration-dev
+          requires:
+            - orb-tools/publish-dev
+
+  integration-tests_prod-release:
+    when: << pipeline.parameters.run-integration-tests >>
+    jobs:
+      - integration-tests
+      - orb-tools/dev-promote-prod-from-commit-subject:
+          orb-name: accurics/accurics-cli
+          add-pr-comment: false
+          publish-version-tag: false
+          fail-if-semver-not-indicated: false
+          requires:
+            - integration-tests
+          filters:
+            branches:
+              only: master
