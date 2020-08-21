@@ -1,8 +1,9 @@
 version: 2.1
 
 description: >
-  The Accurics CircleCI Orb scans IaC (Infrastructure as Code) to help identify vulnerabilities prior to
-  cloud deployment.
+  Scan common Infrastructure-as-Code (IaC) templates like Terraform, Kubernetes YAML, Dockerfile, and OpenFaaS YAML 
+  to identify and remediate vulnerabilities before provisioning your cloud-native infrastructure. 
+  Maintain app and infrastructure security throughout the build and deployment process. 
 
 display:
   source_url: https://github.com/accurics/accurics-orb
